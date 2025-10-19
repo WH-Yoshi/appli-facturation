@@ -16,8 +16,20 @@ export default function App() {
     currentPage, 
     setCurrentPage, 
     savePartenaire, 
-    deletePartenaire 
+    deletePartenaire,
+    isLoading
   } = useCommissionData();
+
+  // Show loading state while data is being fetched
+  if (isLoading) {
+    return (
+      <div className="app-container">
+        <div className="loading-container">
+          Chargement des données...
+        </div>
+      </div>
+    );
+  }
 
   const handleNavigation = (page: PageType) => {
     setCurrentPage(page);

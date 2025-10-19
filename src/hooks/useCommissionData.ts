@@ -1,14 +1,36 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import type { Partenaire, Vente, PageType } from '../types';
-import { loadDataWithFallbackSync, savePartenairesData, saveVentesData } from '../utils/dataLoader';
+import { loadData, getEmptyData, savePartenairesData, saveVentesData } from '../utils/dataLoader';
 import { generateProjections } from '../utils/projections';
 
 export const useCommissionData = () => {
-  const [data, setData] = useState(() => loadDataWithFallbackSync());
+  const [data, setData] = useState(() => getEmptyData());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageType>('Projection');
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load data on component mount
   useEffect(() => {
+    const initializeData = async () => {
+      setIsLoading(true);
+      try {
+        const loadedData = await loadData();
+        setData(loadedData);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeData();
+  }, []);
+
+  // Save data whenever it changes (debounced)
+  useEffect(() => {
+    // Don't save during initial load
+    if (isLoading) return;
+    
     const saveData = async () => {
       try {
         await Promise.all([
@@ -20,9 +42,10 @@ export const useCommissionData = () => {
       }
     };
 
+    // Debounce saves to avoid excessive operations
     const timeoutId = setTimeout(saveData, 500);
     return () => clearTimeout(timeoutId);
-  }, [data]);
+  }, [data, isLoading]);
 
   const projections = useMemo(() => generateProjections(data.ventes), [data.ventes]);
 
@@ -72,6 +95,7 @@ export const useCommissionData = () => {
     currentPage, 
     setCurrentPage, 
     savePartenaire,
-    deletePartenaire
+    deletePartenaire,
+    isLoading
   };
 };

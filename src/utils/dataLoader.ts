@@ -1,10 +1,10 @@
 import type { AppData, Partenaire, Vente } from '../types';
-import { createDataStorage } from './dataStorage';
 
-const storage = createDataStorage();
-
-
-export const loadInitialData = async (): Promise<AppData> => {
+/**
+ * Load data directly from JSON files
+ * Always fetches fresh data - perfect for development and ready for Electron/Tauri
+ */
+export const loadData = async (): Promise<AppData> => {
   try {
     const [partenairesResponse, ventesResponse] = await Promise.all([
       fetch('/data/partenaires.json'),
@@ -20,71 +20,41 @@ export const loadInitialData = async (): Promise<AppData> => {
       return { partenaires, ventes };
     }
   } catch (error) {
-    console.warn('Error loading data from JSON files, using empty fallback:', error);
+    console.warn('Error loading data from JSON files:', error);
   }
 
+  // Fallback to empty data if files can't be loaded
   return { partenaires: [], ventes: [] };
 };
 
-
-export const loadDataWithFallback = async (): Promise<AppData> => {
-  try {
-    const [partenaires, ventes] = await Promise.all([
-      storage.loadPartenaires(),
-      storage.loadVentes()
-    ]);
-
-    if (partenaires.length === 0 && ventes.length === 0) {
-      const initialData = await loadInitialData();
-      await Promise.all([
-        storage.savePartenaires(initialData.partenaires),
-        storage.saveVentes(initialData.ventes)
-      ]);
-      return initialData;
-    }
-
-    return { partenaires, ventes };
-  } catch (error) {
-    console.error('Error loading data from storage, falling back to initial data:', error);
-    return await loadInitialData();
-  }
-};
-
-
-export const loadDataWithFallbackSync = (): AppData => {
-  if (typeof window !== 'undefined') {
-    try {
-      const savedPartenaires = localStorage.getItem('appli-facturation-partenaires');
-      const savedVentes = localStorage.getItem('appli-facturation-ventes');
-      
-      if (savedPartenaires && savedVentes) {
-        return {
-          partenaires: JSON.parse(savedPartenaires),
-          ventes: JSON.parse(savedVentes),
-        };
-      }
-    } catch (error) {
-      console.warn('Error loading from localStorage, falling back to empty data:', error);
-    }
-  }
-  
+/**
+ * Synchronous fallback that returns empty data
+ * Used for React useState initialization
+ */
+export const getEmptyData = (): AppData => {
   return { partenaires: [], ventes: [] };
 };
 
+/**
+ * Save partenaires data
+ * In web mode: logs only (can't write to files)
+ * In Electron/Tauri: will write to actual files
+ */
 export const savePartenairesData = async (partenaires: Partenaire[]): Promise<void> => {
-  try {
-    await storage.savePartenaires(partenaires);
-  } catch (error) {
-    console.error('Error saving partenaires data:', error);
-    throw error;
-  }
+  console.log('Saving partenaires (web mode - logged only):', partenaires);
+  // TODO: In Electron/Tauri, replace with actual file writing:
+  // - Electron: await window.electronAPI.writeDataFile('partenaires.json', partenaires)
+  // - Tauri: await invoke('write_data_file', { filename: 'partenaires.json', data: partenaires })
 };
 
+/**
+ * Save ventes data
+ * In web mode: logs only (can't write to files) 
+ * In Electron/Tauri: will write to actual files
+ */
 export const saveVentesData = async (ventes: Vente[]): Promise<void> => {
-  try {
-    await storage.saveVentes(ventes);
-  } catch (error) {
-    console.error('Error saving ventes data:', error);
-    throw error;
-  }
+  console.log('Saving ventes (web mode - logged only):', ventes);
+  // TODO: In Electron/Tauri, replace with actual file writing:
+  // - Electron: await window.electronAPI.writeDataFile('ventes.json', ventes)
+  // - Tauri: await invoke('write_data_file', { filename: 'ventes.json', data: ventes })
 };
