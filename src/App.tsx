@@ -20,7 +20,6 @@ export default function App() {
     isLoading
   } = useCommissionData();
 
-  // Show loading state while data is being fetched
   if (isLoading) {
     return (
       <div className="app-container">

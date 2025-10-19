@@ -9,7 +9,6 @@ export const useCommissionData = () => {
   const [currentPage, setCurrentPage] = useState<PageType>('Projection');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load data on component mount
   useEffect(() => {
     const initializeData = async () => {
       setIsLoading(true);
@@ -26,9 +25,7 @@ export const useCommissionData = () => {
     initializeData();
   }, []);
 
-  // Save data whenever it changes (debounced)
   useEffect(() => {
-    // Don't save during initial load
     if (isLoading) return;
     
     const saveData = async () => {
@@ -42,7 +39,6 @@ export const useCommissionData = () => {
       }
     };
 
-    // Debounce saves to avoid excessive operations
     const timeoutId = setTimeout(saveData, 500);
     return () => clearTimeout(timeoutId);
   }, [data, isLoading]);
