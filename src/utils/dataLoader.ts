@@ -40,6 +40,27 @@ const createDataFile = async <T>(filename: string, data: T): Promise<void> => {
 
 export const loadData = async (): Promise<AppData> => {
   try {
+    const partenairesLS = localStorage.getItem('appli-facturation-partenaires');
+    const ventesLS = localStorage.getItem('appli-facturation-ventes');
+    const commissionsLS = localStorage.getItem('appli-facturation-commissions');
+
+    if (partenairesLS || ventesLS || commissionsLS) {
+      const partenaires = validateArrayData<Partenaire>(
+        partenairesLS ? JSON.parse(partenairesLS) : [], 
+        'partenaires'
+      );
+      const ventes = validateArrayData<Vente>(
+        ventesLS ? JSON.parse(ventesLS) : [], 
+        'ventes'
+      );
+      const commissionsPayees = validateArrayData<CommissionHistorique>(
+        commissionsLS ? JSON.parse(commissionsLS) : [], 
+        'commissions'
+      );
+
+      return { partenaires, ventes, commissionsPayees };
+    }
+
     const [partenairesData, ventesData, commissionsData] = await Promise.all([
       ensureDataFileExists('partenaires.json', []),
       ensureDataFileExists('ventes.json', []),
@@ -49,6 +70,12 @@ export const loadData = async (): Promise<AppData> => {
     const partenaires = validateArrayData<Partenaire>(partenairesData, 'partenaires');
     const ventes = validateArrayData<Vente>(ventesData, 'ventes');
     const commissionsPayees = validateArrayData<CommissionHistorique>(commissionsData, 'commissions');
+
+    await Promise.all([
+      savePartenairesData(partenaires),
+      saveVentesData(ventes),
+      saveCommissionsData(commissionsPayees)
+    ]);
 
     return { partenaires, ventes, commissionsPayees };
   } catch (error) {
@@ -61,12 +88,17 @@ export const getEmptyData = (): AppData => {
   return { partenaires: [], ventes: [], commissionsPayees: [] };
 };
 
+export const clearAllData = (): void => {
+  localStorage.removeItem('appli-facturation-partenaires');
+  localStorage.removeItem('appli-facturation-ventes');
+  localStorage.removeItem('appli-facturation-commissions');
+  console.log('All application data cleared from localStorage');
+};
+
 export const savePartenairesData = async (partenaires: Partenaire[]): Promise<void> => {
   try {
-    console.log('Saving partenaires (web mode - logged only):', partenaires);
-    // TODO: In Electron/Tauri, replace with actual file writing:
-    // - Electron: await window.electronAPI.writeDataFile('partenaires.json', partenaires)
-    // - Tauri: await invoke('write_data_file', { filename: 'partenaires.json', data: partenaires })
+    console.log('Saving partenaires:', partenaires);
+    localStorage.setItem('appli-facturation-partenaires', JSON.stringify(partenaires));
   } catch (error) {
     console.error('Error saving partenaires data:', error);
     throw new Error('Failed to save partenaires data');
@@ -75,10 +107,8 @@ export const savePartenairesData = async (partenaires: Partenaire[]): Promise<vo
 
 export const saveVentesData = async (ventes: Vente[]): Promise<void> => {
   try {
-    console.log('Saving ventes (web mode - logged only):', ventes);
-    // TODO: In Electron/Tauri, replace with actual file writing:
-    // - Electron: await window.electronAPI.writeDataFile('ventes.json', ventes)
-    // - Tauri: await invoke('write_data_file', { filename: 'ventes.json', data: ventes })
+    console.log('Saving ventes:', ventes);
+    localStorage.setItem('appli-facturation-ventes', JSON.stringify(ventes));
   } catch (error) {
     console.error('Error saving ventes data:', error);
     throw new Error('Failed to save ventes data');
@@ -87,10 +117,8 @@ export const saveVentesData = async (ventes: Vente[]): Promise<void> => {
 
 export const saveCommissionsData = async (commissions: CommissionHistorique[]): Promise<void> => {
   try {
-    console.log('Saving commissions (web mode - logged only):', commissions);
-    // TODO: In Electron/Tauri, replace with actual file writing:
-    // - Electron: await window.electronAPI.writeDataFile('commissions.json', commissions)
-    // - Tauri: await invoke('write_data_file', { filename: 'commissions.json', data: commissions })
+    console.log('Saving commissions:', commissions);
+    localStorage.setItem('appli-facturation-commissions', JSON.stringify(commissions));
   } catch (error) {
     console.error('Error saving commissions data:', error);
     throw new Error('Failed to save commissions data');

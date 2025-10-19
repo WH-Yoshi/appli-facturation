@@ -7,6 +7,7 @@ interface CommissionManagerProps {
   partenaires: Partenaire[];
   commissionsPayees: CommissionHistorique[];
   onMarquerPayee: (commission: Omit<CommissionHistorique, 'id' | 'datePaiement'>) => void;
+  onAnnulerClient: (partenaireId: string, clientFinalNom: string) => void;
 }
 
 interface CommissionItem {
@@ -24,7 +25,8 @@ export const CommissionManager: React.FC<CommissionManagerProps> = ({
   ventes, 
   partenaires, 
   commissionsPayees,
-  onMarquerPayee 
+  onMarquerPayee,
+  onAnnulerClient 
 }) => {
   const partenaireMap = new Map(partenaires.map(p => [p.id, p]));
 
@@ -110,6 +112,10 @@ export const CommissionManager: React.FC<CommissionManagerProps> = ({
     });
   };
 
+  const handleAnnulerClient = (commission: CommissionItem) => {
+    onAnnulerClient(commission.partenaireId, commission.clientFinalNom);
+  };
+
   if (commissionsEnAttente.length === 0) {
     return (
       <div className="commission-manager">
@@ -168,6 +174,13 @@ export const CommissionManager: React.FC<CommissionManagerProps> = ({
                   title="Marquer cette commission comme payée"
                 >
                   ✓ Marquer Payée
+                </button>
+                <button
+                  className="btn-danger"
+                  onClick={() => handleAnnulerClient(commission)}
+                  title="Annuler ce client (supprime toutes ses commissions)"
+                >
+                  ✕ Annuler Client
                 </button>
               </div>
             </div>

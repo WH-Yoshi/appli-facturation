@@ -13,6 +13,7 @@
 .commission-summary,
 .historique-summary {
   @include card;
+  padding: $spacing-lg;
   background: linear-gradient(135deg, $primary-color 0%, $primary-hover 100%);
   color: white;
   
@@ -67,7 +68,7 @@
 .commission-historique-item {
   @include card;
   display: flex;
-  justify-content: space-between;
+  gap: $spacing-lg;
   align-items: center;
   padding: $spacing-lg;
   border-left: 4px solid $border-light;
@@ -181,9 +182,16 @@
 .commission-actions {
   display: flex;
   gap: $spacing-sm;
+  align-items: center;
   
   @media (max-width: $breakpoint-mobile) {
-    justify-content: center;
+    flex-direction: column;
+    gap: $spacing-xs;
+    width: 100%;
+    
+    button {
+      width: 100%;
+    }
   }
 }
 
@@ -264,6 +272,23 @@
   
   &:hover:not(:disabled) {
     background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Bouton spécifique pour annuler client
+.btn-danger {
+  @include button-base;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
     transform: translateY(-1px);
   }
   

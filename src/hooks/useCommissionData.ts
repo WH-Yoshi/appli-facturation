@@ -121,6 +121,31 @@ export const useCommissionData = () => {
     }));
   }, []);
 
+  const annulerClient = useCallback((partenaireId: string, clientFinalNom: string) => {
+    const confirmMessage = `Êtes-vous sûr de vouloir annuler le client "${clientFinalNom}" ? Cette action supprimera les ventes futures de ce client mais conservera l'historique des commissions déjà payées.`;
+    
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    setData(prev => {
+      // Supprimer uniquement les ventes du client spécifique
+      const ventesRestantes = prev.ventes.filter(vente => 
+        !(vente.partenaireId === partenaireId && vente.clientFinalNom === clientFinalNom)
+      );
+
+      // CONSERVER toutes les commissions payées dans l'historique
+      // Les commissions payées restent intactes pour garder l'historique complet
+      const commissionsPayees = prev.commissionsPayees; // Pas de filtrage
+
+      return {
+        ...prev,
+        ventes: ventesRestantes,
+        commissionsPayees: commissionsPayees
+      };
+    });
+  }, []);
+
   return { 
     data, 
     projections, 
@@ -132,6 +157,7 @@ export const useCommissionData = () => {
     savePartenaire,
     deletePartenaire,
     marquerCommissionPayee,
+    annulerClient,
     isLoading
   };
 };

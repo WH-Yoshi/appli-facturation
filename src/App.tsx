@@ -20,6 +20,7 @@ export default function App() {
     savePartenaire, 
     deletePartenaire,
     marquerCommissionPayee,
+    annulerClient,
     isLoading
   } = useCommissionData();
 
@@ -94,12 +95,16 @@ export default function App() {
       <main className="main-content">
         {currentPage === 'Projection' ? (
           <>
-            <ProjectionTable projections={projections} partenaires={data.partenaires} />
+            <ProjectionTable 
+              projections={projections} 
+              partenaires={data.partenaires} 
+            />
             <CommissionManager 
               ventes={data.ventes}
               partenaires={data.partenaires}
               commissionsPayees={data.commissionsPayees}
               onMarquerPayee={marquerCommissionPayee}
+              onAnnulerClient={annulerClient}
             />
           </>
         ) : currentPage === 'Partenaires' ? (
