@@ -6,6 +6,8 @@ $secondary-hover: #4b5563;
 $danger-color: #ef4444;
 $danger-hover: #dc2626;
 $success-color: #059669;
+$success-light: #10b981;
+$error-color: #ef4444;
 $warning-color: #f97316;
 $warning-bg: #fff7ed;
 $warning-text: #ea580c;
@@ -50,6 +52,7 @@ $font-medium: 500;
 $font-semibold: 600;
 $font-bold: 700;
 
+$text-xs: 0.75rem;
 $text-sm: 0.875rem;
 $text-base: 1rem;
 $text-lg: 1.125rem;
@@ -57,5 +60,9 @@ $text-xl: 1.25rem;
 $text-2xl: 1.5rem;
 
 $breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+
+$primary-light: #93c5fd;
+$radius-full: 9999px;
 
 $z-modal: 1000;

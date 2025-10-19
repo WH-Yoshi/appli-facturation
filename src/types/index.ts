@@ -7,6 +7,9 @@ export interface Partenaire {
 export interface EcheancePersonnalisee {
   date: string;
   commission: number;
+  statut?: 'en_attente' | 'payee';
+  datePaiement?: string;
+  id?: string;
 }
 
 export interface Vente {
@@ -30,9 +33,21 @@ export interface Projection {
   ventesDetails: Vente[];
 }
 
+export interface CommissionHistorique {
+  id: string;
+  venteId: string;
+  partenaireId: string;
+  clientFinalNom: string;
+  montant: number;
+  dateEcheance: string;
+  datePaiement: string;
+  planType: 'Automatique' | 'Personnalisé';
+}
+
 export interface AppData {
   partenaires: Partenaire[];
   ventes: Vente[];
+  commissionsPayees: CommissionHistorique[];
 }
 
 export interface FormData {
@@ -48,4 +63,4 @@ export interface FormData {
   montantRestant: number;
 }
 
-export type PageType = 'Projection' | 'Partenaires';
+export type PageType = 'Projection' | 'Partenaires' | 'Historique';

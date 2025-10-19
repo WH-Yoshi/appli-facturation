@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import type { Partenaire, Vente, PageType } from '../types';
-import { loadData, getEmptyData, savePartenairesData, saveVentesData } from '../utils/dataLoader';
+import type { Partenaire, Vente, PageType, CommissionHistorique } from '../types';
+import { loadData, getEmptyData, savePartenairesData, saveVentesData, saveCommissionsData } from '../utils/dataLoader';
 import { generateProjections } from '../utils/projections';
 
 export const useCommissionData = () => {
@@ -32,7 +32,8 @@ export const useCommissionData = () => {
       try {
         await Promise.all([
           savePartenairesData(data.partenaires),
-          saveVentesData(data.ventes)
+          saveVentesData(data.ventes),
+          saveCommissionsData(data.commissionsPayees)
         ]);
       } catch (error) {
         console.error('Error saving data:', error);
@@ -43,7 +44,7 @@ export const useCommissionData = () => {
     return () => clearTimeout(timeoutId);
   }, [data, isLoading]);
 
-  const projections = useMemo(() => generateProjections(data.ventes), [data.ventes]);
+  const projections = useMemo(() => generateProjections(data.ventes, data.commissionsPayees), [data.ventes, data.commissionsPayees]);
 
   const addVente = useCallback((nouvelleVente: Omit<Vente, 'id' | 'montantCommissionTotal'>) => {
     const commissionTotale = nouvelleVente.montantTotalVente * nouvelleVente.tauxCommissionApplique;
@@ -82,6 +83,44 @@ export const useCommissionData = () => {
       }));
   }, [data.ventes]);
 
+  const marquerCommissionPayee = useCallback((commission: Omit<CommissionHistorique, 'id' | 'datePaiement'>) => {
+    const nouvelleCommission: CommissionHistorique = {
+      ...commission,
+      id: `comm_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      datePaiement: new Date().toISOString().split('T')[0]
+    };
+
+    // Ajouter à l'historique des commissions payées
+    setData(prev => ({
+      ...prev,
+      commissionsPayees: [...prev.commissionsPayees, nouvelleCommission]
+    }));
+
+    // Marquer l'échéance correspondante comme payée si c'est un plan personnalisé
+    setData(prev => ({
+      ...prev,
+      ventes: prev.ventes.map(vente => {
+        if (vente.id === commission.venteId && vente.planType === 'Personnalisé' && vente.echeancesPersonnalisees) {
+          return {
+            ...vente,
+            echeancesPersonnalisees: vente.echeancesPersonnalisees.map(echeance => {
+              if (echeance.date === commission.dateEcheance && 
+                  Math.abs(echeance.commission - commission.montant) < 0.01) {
+                return {
+                  ...echeance,
+                  statut: 'payee' as const,
+                  datePaiement: nouvelleCommission.datePaiement
+                };
+              }
+              return echeance;
+            })
+          };
+        }
+        return vente;
+      })
+    }));
+  }, []);
+
   return { 
     data, 
     projections, 
@@ -92,6 +131,7 @@ export const useCommissionData = () => {
     setCurrentPage, 
     savePartenaire,
     deletePartenaire,
+    marquerCommissionPayee,
     isLoading
   };
 };

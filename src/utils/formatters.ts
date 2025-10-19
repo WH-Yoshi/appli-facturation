@@ -9,3 +9,12 @@ export const formatDateMonth = (moisAnnee: string): string => {
   const date = new Date(parseInt(year), parseInt(month) - 1, 1);
   return date.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' });
 };
+
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('fr-FR', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+};

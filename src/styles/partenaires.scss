@@ -3,11 +3,12 @@
 @use 'mixins' as *;
 
 .partner-manager {
-  max-width: 800px;
-}
-
-.add-partner-btn {
-  margin-bottom: $spacing-xl;
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-xl;
+  }
 }
 
 .partenaires-list {

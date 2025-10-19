@@ -50,9 +50,9 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
     setFormData(prev => {
       const newEcheances = [...prev.echeancesPersonnalisees];
       if (field === 'commission') {
-        newEcheances[index][field] = parseFloat(value);
-      } else {
-        newEcheances[index][field] = value;
+        newEcheances[index] = { ...newEcheances[index], commission: parseFloat(value) };
+      } else if (field === 'date') {
+        newEcheances[index] = { ...newEcheances[index], date: value };
       }
 
       const updatedForm = { ...prev, echeancesPersonnalisees: newEcheances };
@@ -68,7 +68,12 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
   const addCustomEcheance = () => {
     setFormData(prev => ({
       ...prev,
-      echeancesPersonnalisees: [...prev.echeancesPersonnalisees, { date: new Date().toISOString().split('T')[0], commission: 0 }],
+      echeancesPersonnalisees: [...prev.echeancesPersonnalisees, { 
+        date: new Date().toISOString().split('T')[0], 
+        commission: 0,
+        statut: 'en_attente',
+        id: `echeance_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+      }],
     }));
   };
 
@@ -185,9 +190,6 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
           <p className={`montant-restant ${!isSubmitDisabled && 'ok'}`}>
             Montant à assigner : <strong>{formatCurrency(formData.montantRestant)}</strong>
           </p>
-          <button type="button" onClick={addCustomEcheance} className="btn-secondary">
-            + Ajouter une Échéance
-          </button>
 
           {formData.echeancesPersonnalisees.map((e, index) => (
             <div key={index} className="custom-echeance-row">
@@ -197,7 +199,8 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
                 onChange={event => handleCustomChange(index, 'date', event.target.value)} 
                 required 
                 aria-label={`Date de l'échéance ${index + 1}`}
-                className='input-date'
+                id='input-date'
+                name='date'
               />
               <input 
                 type="number" 
@@ -206,7 +209,8 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
                 onChange={event => handleCustomChange(index, 'commission', event.target.value)} 
                 required 
                 aria-label={`Commission de l'échéance ${index + 1}`}
-                className='input-amount'
+                id='input-commission'
+                name='commission'
               />
               <div className="delete-wrapper">
                 <button type="button" onClick={() => {
@@ -220,6 +224,9 @@ export const AddVenteForm: React.FC<AddVenteFormProps> = ({ partenaires, onSubmi
               </div>
             </div>
           ))}
+          <button type="button" onClick={addCustomEcheance} className="btn-secondary">
+            + Ajouter une Échéance
+          </button>
         </div>
       )}
       

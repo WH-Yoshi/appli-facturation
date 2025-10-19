@@ -1,9 +1,23 @@
-import type { Vente, Projection } from '../types';
+import type { Vente, Projection, CommissionHistorique } from '../types';
 
-export const generateProjections = (ventes: Vente[]): Record<string, Projection> => {
+export const generateProjections = (ventes: Vente[], commissionsPayees: CommissionHistorique[] = []): Record<string, Projection> => {
   const projections: Record<string, Projection> = {};
 
+  // Fonction utilitaire pour vérifier si une commission est déjà payée
+  const isCommissionPayee = (venteId: string, dateEcheance: string, montant: number): boolean => {
+    return commissionsPayees.some(commission => 
+      commission.venteId === venteId && 
+      commission.dateEcheance === dateEcheance &&
+      Math.abs(commission.montant - montant) < 0.01
+    );
+  };
+
   const addEcheanceToProjection = (dateStr: string, commission: number, vente: Vente) => {
+    // Vérifier si cette commission est déjà payée
+    if (isCommissionPayee(vente.id, dateStr, commission)) {
+      return; // Ne pas ajouter les commissions déjà payées aux projections
+    }
+
     const date = new Date(dateStr);
     const dateKey = new Date(date.getFullYear(), date.getMonth(), 1); 
     const moisAnnee = dateKey.getFullYear() + '-' + String(dateKey.getMonth() + 1).padStart(2, '0');
@@ -31,7 +45,10 @@ export const generateProjections = (ventes: Vente[]): Record<string, Projection>
   ventes.forEach(vente => {
     if (vente.planType === 'Personnalisé' && vente.echeancesPersonnalisees) {
       vente.echeancesPersonnalisees.forEach(echeance => {
-        addEcheanceToProjection(echeance.date, echeance.commission, vente);
+        // Exclure les échéances marquées comme payées
+        if (echeance.statut !== 'payee') {
+          addEcheanceToProjection(echeance.date, echeance.commission, vente);
+        }
       });
     } else if (vente.planType === 'Automatique' && vente.nombreEcheances && vente.pasEcheance) {
       const montantParEcheance = vente.montantCommissionTotal / vente.nombreEcheances;

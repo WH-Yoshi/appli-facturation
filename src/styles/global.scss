@@ -31,20 +31,23 @@
 }
 
 .main-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2xl;
   min-height: 500px;
 }
 
 .warning-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: $spacing-lg;
   border: 1px solid $warning-color;
   background-color: $warning-bg;
   border-radius: $radius-lg;
+  margin: 0 $spacing-lg;
   margin-top: $spacing-lg;
   color: $warning-text;
-  
-  .btn-secondary {
-    margin-left: $spacing-lg;
-  }
 }
 
 @media (max-width: $breakpoint-mobile) {

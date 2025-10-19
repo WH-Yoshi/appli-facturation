@@ -18,11 +18,14 @@ export const PartnerManager: React.FC<PartnerManagerProps> = ({ partenaires, sav
 
   return (
     <div className="partner-manager">
-      <h2>Gestion de Mes Partenaires</h2>
+      <div className="top-section">
+        <h2>Gestion de Mes Partenaires</h2>
 
-      <button onClick={handleNew} className="btn-primary add-partner-btn">
-        + Ajouter un Nouveau Partenaire
-      </button>
+        <button onClick={handleNew} className="btn-primary add-partner-btn">
+          + Ajouter un Nouveau Partenaire
+        </button>
+      </div>
+      
       
       <Modal isOpen={!!editingPartenaire} onClose={handleCancel}>
         <PartenaireForm 

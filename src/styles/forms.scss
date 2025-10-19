@@ -13,7 +13,7 @@
 }
 
 .form-group {
-  margin-bottom: $spacing-xl;
+  margin: $spacing-sm 0 $spacing-xl 0;
   
   label {
     display: block;
@@ -49,7 +49,7 @@
 }
 
 .personnalise-config {
-  margin-top: $spacing-lg;
+  margin: $spacing-lg 0;
   padding: $spacing-lg;
   background-color: $bg-secondary;
   border-radius: $radius-lg;
@@ -79,6 +79,10 @@
   @media (max-width: $breakpoint-mobile) {
     grid-template-columns: 1fr;
     gap: $spacing-sm;
+  }
+
+  input {
+    @include form-input;
   }
 }
 

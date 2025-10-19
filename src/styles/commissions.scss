@@ -1,0 +1,315 @@
+// Styles pour la gestion des commissions
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'sass:color';
+
+.commission-manager,
+.commission-historique {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.commission-summary,
+.historique-summary {
+  @include card;
+  background: linear-gradient(135deg, $primary-color 0%, $primary-hover 100%);
+  color: white;
+  
+  h3 {
+    margin: 0 0 $spacing-lg 0;
+    font-size: $text-xl;
+    font-weight: $font-semibold;
+  }
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-lg;
+  
+  @media (max-width: $breakpoint-mobile) {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.stat-label {
+  font-size: $text-sm;
+  opacity: 0.9;
+  font-weight: $font-medium;
+}
+
+.stat-value {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  
+  &.total-paid {
+    font-size: $text-xl;
+    color: $success-light;
+  }
+}
+
+.commissions-list,
+.historique-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.commission-item,
+.commission-historique-item {
+  @include card;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-lg;
+  border-left: 4px solid $border-light;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  &.overdue {
+    border-left-color: $error-color;
+    background-color: #fef2f2;
+  }
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    gap: $spacing-md;
+    align-items: stretch;
+  }
+}
+
+.commission-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.commission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+}
+
+.client-name {
+  font-weight: $font-semibold;
+  font-size: $text-lg;
+  color: $text-primary;
+}
+
+.partenaire-name {
+  font-size: $text-sm;
+  color: $text-muted;
+  font-style: italic;
+}
+
+.commission-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+}
+
+.dates-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.echeance-date,
+.paiement-date {
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.paiement-date {
+  color: $success-color;
+  font-weight: $font-medium;
+}
+
+.overdue-badge {
+  background-color: $error-color;
+  color: white;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  margin-left: $spacing-sm;
+}
+
+.commission-amount {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  color: $primary-color;
+  
+  &.paid {
+    color: $success-color;
+  }
+}
+
+.plan-type {
+  font-size: $text-xs;
+  color: $text-muted;
+  text-transform: uppercase;
+  font-weight: $font-medium;
+  letter-spacing: 0.5px;
+}
+
+.commission-actions {
+  display: flex;
+  gap: $spacing-sm;
+  
+  @media (max-width: $breakpoint-mobile) {
+    justify-content: center;
+  }
+}
+
+.commission-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-full;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  
+  &.paid {
+    background-color: $success-light;
+    color: $success-color;
+  }
+}
+
+.monthly-breakdown {
+  @include card;
+  
+  h4 {
+    margin: 0 0 $spacing-lg 0;
+    color: $text-secondary;
+    font-weight: $font-semibold;
+  }
+}
+
+.monthly-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: $spacing-md;
+}
+
+.monthly-stat {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+  background-color: $bg-secondary;
+  border-radius: $radius-lg;
+  text-align: center;
+}
+
+.month-label {
+  font-size: $text-sm;
+  color: $text-muted;
+  font-weight: $font-medium;
+}
+
+.month-amount {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  color: $primary-color;
+}
+
+.historique-footer {
+  text-align: center;
+  padding: $spacing-lg;
+  background-color: $bg-secondary;
+  border-radius: $radius-lg;
+}
+
+.total-summary {
+  margin: 0;
+  color: $text-muted;
+  font-weight: $font-medium;
+}
+
+// Bouton spécifique pour marquer comme payée
+.btn-success {
+  @include button-base;
+  background: linear-gradient(135deg, $success-color 0%, #047857 100%);
+  color: white;
+  border: none;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// État vide amélioré
+.empty-state {
+  @include card;
+  text-align: center;
+  padding: $spacing-3xl;
+  background: linear-gradient(135deg, $bg-secondary 0%, color.adjust($bg-secondary, $lightness: 5%) 100%);
+  color: $text-muted;
+  font-size: $text-lg;
+  
+  &::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto $spacing-lg;
+    background: radial-gradient(circle, $primary-light 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-tablet) {
+  .commission-manager,
+  .commission-historique {
+    gap: $spacing-lg;
+  }
+  
+  .commission-item,
+  .commission-historique-item {
+    padding: $spacing-md;
+  }
+  
+  .summary-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .monthly-stats {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}

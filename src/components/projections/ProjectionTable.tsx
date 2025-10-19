@@ -14,7 +14,7 @@ export const ProjectionTable: React.FC<ProjectionTableProps> = ({ projections, p
   return (
     <div className="projection-container">
       {sortedMonths.length === 0 ? (
-        <p className="empty-state">Aucune commission prévue. Ajoutez une vente pour commencer la projection !</p>
+        <p className="empty-state">Aucune commission prévue.</p>
       ) : (
         sortedMonths.map(moisAnnee => {
           const projection = projections[moisAnnee];

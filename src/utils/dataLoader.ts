@@ -1,4 +1,4 @@
-import type { AppData, Partenaire, Vente } from '../types';
+import type { AppData, Partenaire, Vente, CommissionHistorique } from '../types';
 
 export const loadData = async (): Promise<AppData> => {
   try {
@@ -13,17 +13,17 @@ export const loadData = async (): Promise<AppData> => {
         ventesResponse.json()
       ]);
 
-      return { partenaires, ventes };
+      return { partenaires, ventes, commissionsPayees: [] };
     }
   } catch (error) {
     console.warn('Error loading data from JSON files:', error);
   }
 
-  return { partenaires: [], ventes: [] };
+  return { partenaires: [], ventes: [], commissionsPayees: [] };
 };
 
 export const getEmptyData = (): AppData => {
-  return { partenaires: [], ventes: [] };
+  return { partenaires: [], ventes: [], commissionsPayees: [] };
 };
 
 export const savePartenairesData = async (partenaires: Partenaire[]): Promise<void> => {
@@ -38,4 +38,11 @@ export const saveVentesData = async (ventes: Vente[]): Promise<void> => {
   // TODO: In Electron/Tauri, replace with actual file writing:
   // - Electron: await window.electronAPI.writeDataFile('ventes.json', ventes)
   // - Tauri: await invoke('write_data_file', { filename: 'ventes.json', data: ventes })
+};
+
+export const saveCommissionsData = async (commissions: CommissionHistorique[]): Promise<void> => {
+  console.log('Saving commissions (web mode - logged only):', commissions);
+  // TODO: In Electron/Tauri, replace with actual file writing:
+  // - Electron: await window.electronAPI.writeDataFile('commissions.json', commissions)
+  // - Tauri: await invoke('write_data_file', { filename: 'commissions.json', data: commissions })
 };
