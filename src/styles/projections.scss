@@ -1,0 +1,115 @@
+// Styles des projections
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.projection-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.empty-state {
+  text-align: center;
+  color: $text-muted;
+  font-style: italic;
+  padding: $spacing-3xl;
+  background-color: $bg-secondary;
+  border-radius: $radius-xl;
+}
+
+.mois-card {
+  @include card;
+}
+
+.mois-header {
+  @include gradient-primary;
+  color: white;
+  padding: $spacing-xl;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h3 {
+    margin: 0;
+    font-size: $text-2xl;
+    font-weight: $font-semibold;
+  }
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    gap: $spacing-lg;
+    text-align: center;
+  }
+}
+
+.total-encaisser {
+  text-align: right;
+  
+  .label {
+    display: block;
+    font-size: $text-sm;
+    opacity: 0.9;
+    margin-bottom: $spacing-xs;
+  }
+  
+  .montant {
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+  }
+}
+
+.partenaires-summary,
+.ventes-summary {
+  padding: $spacing-xl;
+  
+  h4 {
+    margin: 0 0 $spacing-lg 0;
+    color: $text-secondary;
+    font-weight: $font-semibold;
+  }
+}
+
+.facturation-list,
+.ventes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.facturation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md;
+  background-color: $bg-secondary;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-sm;
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    gap: $spacing-sm;
+    text-align: center;
+  }
+}
+
+.partenaire-name {
+  font-weight: $font-medium;
+  color: $text-secondary;
+}
+
+.partenaire-montant {
+  font-weight: $font-semibold;
+  color: $success-color;
+}
+
+.ventes-list {
+  li {
+    padding: $spacing-sm 0;
+    border-bottom: 1px solid $border-light;
+    color: $text-muted;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+// Styles des boutons
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.btn-primary {
+  @include button-base;
+  @include interactive-element($primary-color, $primary-hover);
+  color: white;
+}
+
+.btn-secondary {
+  @include button-base;
+  @include interactive-element($secondary-color, $secondary-hover);
+  color: white;
+}
+
+.btn-delete {
+  @include button-base;
+  @include interactive-element($danger-color, $danger-hover);
+  color: white;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-md;
+}

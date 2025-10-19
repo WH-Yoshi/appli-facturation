@@ -1,0 +1,51 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-2xl;
+  padding-bottom: $spacing-lg;
+  border-bottom: 2px solid $border-light;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.main-content {
+  min-height: 500px;
+}
+
+.warning-message {
+  padding: $spacing-lg;
+  border: 1px solid $warning-color;
+  background-color: $warning-bg;
+  border-radius: $radius-lg;
+  margin-top: $spacing-lg;
+  color: $warning-text;
+  
+  .btn-secondary {
+    margin-left: $spacing-lg;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .app-header {
+    flex-direction: column;
+    gap: $spacing-lg;
+    align-items: stretch;
+  }
+
+  .nav-buttons {
+    justify-content: center;
+  }
+}

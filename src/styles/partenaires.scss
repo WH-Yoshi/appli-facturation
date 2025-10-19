@@ -1,0 +1,49 @@
+// Styles pour la gestion des partenaires
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.partner-manager {
+  max-width: 800px;
+}
+
+.add-partner-btn {
+  margin-bottom: $spacing-xl;
+}
+
+.partenaires-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.partenaire-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-xl;
+  @include card;
+  
+  .info {
+    .name {
+      font-size: $text-lg;
+      font-weight: $font-semibold;
+      color: $text-primary;
+      margin-bottom: $spacing-xs;
+    }
+    
+    .rate {
+      color: $text-muted;
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: $spacing-md;
+  }
+  
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column;
+    gap: $spacing-lg;
+    text-align: center;
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "p_alpha",
+    "nomSociete": "Agence Alpha Marketing",
+    "tauxCommissionStandard": 0.10
+  },
+  {
+    "id": "p_beta",
+    "nomSociete": "Partenaire Beta Solutions",
+    "tauxCommissionStandard": 0.12
+  }
+]

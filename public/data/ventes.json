@@ -1,0 +1,50 @@
+[
+  {
+    "id": "v_auto_1",
+    "partenaireId": "p_alpha",
+    "clientFinalNom": "Marc Dupont",
+    "montantTotalVente": 10000,
+    "tauxCommissionApplique": 0.15,
+    "dateVente": "2025-07-20",
+    "montantCommissionTotal": 1500,
+    "planType": "Automatique",
+    "nombreEcheances": 5,
+    "pasEcheance": "mensuel"
+  },
+  {
+    "id": "v_perso_1",
+    "partenaireId": "p_beta",
+    "clientFinalNom": "Sophie Martin",
+    "montantTotalVente": 20000,
+    "tauxCommissionApplique": 0.20,
+    "dateVente": "2025-09-01",
+    "montantCommissionTotal": 4000,
+    "planType": "Personnalisé",
+    "echeancesPersonnalisees": [
+      {
+        "date": "2025-10-01",
+        "commission": 2000
+      },
+      {
+        "date": "2025-11-01",
+        "commission": 1000
+      },
+      {
+        "date": "2025-12-01",
+        "commission": 1000
+      }
+    ]
+  },
+  {
+    "id": "v_auto_2",
+    "partenaireId": "p_alpha",
+    "clientFinalNom": "Lucas Vaseur",
+    "montantTotalVente": 5000,
+    "tauxCommissionApplique": 0.15,
+    "dateVente": "2025-08-05",
+    "montantCommissionTotal": 750,
+    "planType": "Automatique",
+    "nombreEcheances": 4,
+    "pasEcheance": "trimestriel"
+  }
+]

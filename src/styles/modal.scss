@@ -1,0 +1,42 @@
+// Styles de la modal
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  @include center-flex;
+  z-index: $z-modal;
+}
+
+.modal-content {
+  background: $bg-primary;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: $shadow-lg;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: $spacing-lg;
+  right: $spacing-lg;
+  background: none;
+  border: none;
+  font-size: $text-2xl;
+  cursor: pointer;
+  color: $text-muted;
+  padding: $spacing-xs;
+  border-radius: $radius-sm;
+  
+  &:hover {
+    background-color: $bg-light;
+  }
+}

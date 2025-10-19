@@ -1,0 +1,88 @@
+// Styles des formulaires
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.form-vente,
+.form-partenaire {
+  min-width: 500px;
+  
+  @media (max-width: $breakpoint-mobile) {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.form-group {
+  margin-bottom: $spacing-xl;
+  
+  label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-weight: $font-medium;
+    color: $text-secondary;
+  }
+  
+  input,
+  select {
+    @include form-input;
+  }
+}
+
+.grid-2 {
+  @include grid-responsive(2);
+}
+
+.grid-3 {
+  @include grid-responsive(3);
+}
+
+.commission-total-display {
+  .total-value {
+    font-size: $text-xl;
+    font-weight: $font-semibold;
+    color: $success-color;
+    background-color: $bg-success;
+    padding: $spacing-md;
+    border-radius: $radius-lg;
+    text-align: center;
+  }
+}
+
+.personnalise-config {
+  margin-top: $spacing-lg;
+  padding: $spacing-lg;
+  background-color: $bg-secondary;
+  border-radius: $radius-lg;
+}
+
+.montant-restant {
+  font-weight: $font-semibold;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  border-radius: $radius-lg;
+  background-color: $bg-warning;
+  color: $bg-warning-text;
+  
+  &.ok {
+    background-color: $bg-warning-ok;
+    color: $bg-warning-ok-text;
+  }
+}
+
+.custom-echeance-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+  align-items: center;
+  
+  @media (max-width: $breakpoint-mobile) {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+}
+
+.delete-wrapper {
+  display: flex;
+  align-items: center;
+}
