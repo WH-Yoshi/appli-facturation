@@ -1,6 +1,5 @@
 import type { AppData, Partenaire, Vente, CommissionHistorique } from '../types';
 
-// Helper function to validate data structure
 const validateArrayData = <T>(data: unknown, dataType: string): T[] => {
   if (!Array.isArray(data)) {
     console.warn(`Invalid ${dataType} data format, using empty array`);
@@ -9,7 +8,6 @@ const validateArrayData = <T>(data: unknown, dataType: string): T[] => {
   return data as T[];
 };
 
-// Helper function to create initial JSON files if they don't exist
 const ensureDataFileExists = async <T>(filename: string, defaultData: T): Promise<T> => {
   try {
     const response = await fetch(`/data/${filename}`);
@@ -17,7 +15,6 @@ const ensureDataFileExists = async <T>(filename: string, defaultData: T): Promis
     if (response.ok) {
       return await response.json() as T;
     } else if (response.status === 404) {
-      // File doesn't exist, create it with default data
       console.log(`Creating ${filename} with default data`);
       await createDataFile(filename, defaultData);
       return defaultData;
@@ -26,7 +23,6 @@ const ensureDataFileExists = async <T>(filename: string, defaultData: T): Promis
     }
   } catch (error) {
     if (error instanceof TypeError && error.message.includes('fetch')) {
-      // Network error or file doesn't exist
       console.log(`File ${filename} not found, creating with default data`);
       await createDataFile(filename, defaultData);
       return defaultData;
@@ -35,7 +31,6 @@ const ensureDataFileExists = async <T>(filename: string, defaultData: T): Promis
   }
 };
 
-// Helper function to create data files (placeholder for web mode)
 const createDataFile = async <T>(filename: string, data: T): Promise<void> => {
   console.log(`Creating ${filename} (web mode - logged only):`, data);
   // TODO: In Electron/Tauri, replace with actual file writing:
@@ -45,14 +40,12 @@ const createDataFile = async <T>(filename: string, data: T): Promise<void> => {
 
 export const loadData = async (): Promise<AppData> => {
   try {
-    // Load data with automatic file creation if missing
     const [partenairesData, ventesData, commissionsData] = await Promise.all([
       ensureDataFileExists('partenaires.json', []),
       ensureDataFileExists('ventes.json', []),
       ensureDataFileExists('commissions.json', [])
     ]);
 
-    // Validate data structure
     const partenaires = validateArrayData<Partenaire>(partenairesData, 'partenaires');
     const ventes = validateArrayData<Vente>(ventesData, 'ventes');
     const commissionsPayees = validateArrayData<CommissionHistorique>(commissionsData, 'commissions');
@@ -60,7 +53,6 @@ export const loadData = async (): Promise<AppData> => {
     return { partenaires, ventes, commissionsPayees };
   } catch (error) {
     console.error('Error loading data:', error);
-    // Return empty data as fallback
     return getEmptyData();
   }
 };
